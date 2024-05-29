@@ -1,0 +1,153 @@
+:root {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  background-color: #e6e6e6 !important;
+  color: black !important;
+}
+
+.background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: linear-gradient(
+    to left bottom,
+    #90b94b,
+    #8bb85d,
+    #88b66d,
+    #87b47b,
+    #89b187,
+    #87ad8c,
+    #87a990,
+    #88a493,
+    #849e92,
+    #819890,
+    #7e918d,
+    #7d8b89
+  );
+  opacity: 1; /* Adjust the opacity value as needed */
+  z-index: -1; /* Place the pseudo-element behind the content */
+}
+
+/*****Showroom Sync****/
+#api-frame-anno-sync {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+#api-frame-secondary {
+  height: 250px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.annotate-sync {
+  /* box-sizing: border-box !important; */
+  overflow: hidden !important;
+}
+
+.annotation-number {
+  font-size: 5rem;
+  transition: 0.3s ease-in !important;
+}
+
+.annotation-description {
+  font-size: 1.3rem;
+  max-width: 300px;
+  transition: 0.3s ease-in !important;
+}
+
+.annotate-card {
+  /* background-color: hsl(0, 67%, 88%); */
+  /* background-color: rgb(224, 199, 199); */
+  background-color: rgb(0 0 0 / 73%);
+  padding: 2em;
+  min-height: 520px;
+  max-width: 395px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 1px 1px 10px rgb(93, 92, 92);
+  border-radius: 10px;
+  color: white;
+  transition: 0.3s ease-in !important;
+}
+
+.annotate-img {
+  border-radius: 10px;
+  transition: 0.3s ease-in !important;
+}
+
+.powered-by {
+  cursor: pointer;
+}
+
+.annotate-button:active {
+  box-shadow: 1px 1px 100px black inset;
+  border-radius: 50%;
+}
+
+.black-font {
+  color: black;
+  transition: 0.3s ease-in !important;
+}
+
+.pico-img-des {
+  height: 75vh;
+  width: auto;
+  border-radius: 10px;
+}
+
+.annotation-counter {
+  position: absolute;
+  left: 15%;
+  top: 2%;
+}
+
+.close-btn-hover {
+  position: absolute;
+  margin: 5px;
+}
+
+.close-btn-hover:hover {
+  color: #dc4c64;
+}
+.close-btn-container {
+  width: 80px !important;
+}
+
+@media (max-height: 900px) {
+  .pico-img-des {
+    height: 65vh;
+  }
+}
+.learn-more {
+  color: white !important;
+  text-shadow: 1px 1px 1px black;
+}
+
+.more {
+  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+/*****Showroom Sync****/
