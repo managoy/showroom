@@ -16,7 +16,7 @@
 body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
   background-color: #e6e6e6 !important;
-  color: black !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 .background::before {
@@ -103,6 +103,11 @@ body {
   border-radius: 50%;
 }
 
+.annotate-playground-button:active {
+  box-shadow: 1px 1px 100px rgb(255, 255, 255) inset;
+  border-radius: 50%;
+}
+
 .black-font {
   color: black;
   transition: 0.3s ease-in !important;
@@ -151,3 +156,68 @@ body {
 }
 
 /*****Showroom Sync****/
+
+/*****Play Ground****/
+
+#api-frame-playground {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+.playground-options {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+.playground-info {
+  background: hsla(0, 90%, 4%, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background: hsla(0, 90%, 4%, 0.55);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 1;
+  overflow-x: hidden;
+  transition: 0.5s ease-in-out;
+  color: white;
+}
+
+.sidenav * {
+  transition: 0.5s ease-in-out !important ;
+  /* border: 1px solid red !important; */
+}
+
+.close-button {
+  background-color: rgba(255, 255, 255, 0) !important;
+  box-shadow: none !important;
+}
+
+.annotation-index {
+  font-size: 4rem;
+}
+
+.playground-image {
+  border-radius: 10px;
+}
+
+.custom-model {
+  background-color: rgba(0, 0, 0, 0.642) !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: white;
+}
+
+.modal-close {
+  filter: invert(1);
+}
+
+/*****Play Ground****/
