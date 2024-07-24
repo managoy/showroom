@@ -7,9 +7,12 @@ import {
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
+import SideNav from "./SideNav";
+import { mat4 } from "gl-matrix";
 
 const Playground = () => {
   const [sideNavOpen, setSideNavOpen] = useState(false);
+  const [gameState, setGameState] = useState("menu");
   const [content, setContent] = useState();
   const [annotationLength, setAnnotationLength] = useState();
   const [enableAnnotation, setEnableAnnotation] = useState(false);
@@ -20,7 +23,7 @@ const Playground = () => {
     "39cd19123dc74c438b22b357dbd959f0"
   );
   const [dontShowAgain, setDontShowAgain] = useState(
-    localStorage.getItem("dontShowAgain") || false
+    localStorage.getItem("dontShowAgain") === "true"
   );
   const handleCheckboxChange = (e) => {
     if (e.target.checked) {
@@ -162,6 +165,30 @@ const Playground = () => {
             });
           });
 
+          // Hide the Annotations Initially
+          for (let i = 0; i < 4; i++) {
+            api.hideAnnotation(i, function (err, index) {
+              if (!err) {
+                //  window.console.log('Showing annotation', index + 1);
+              }
+            });
+          }
+
+          // Get Node Map
+          api.getNodeMap(function (err, nodes) {
+            if (!err) {
+              window.console.log("Nodes", nodes); // [ ... ]
+              window.tempNode = nodes;
+            }
+          });
+
+          // Get Scene Graph
+          api.getSceneGraph(function (err, graph) {
+            if (!err) {
+              window.console.log("Graph", graph); // { ... }
+            }
+          });
+
           console.log("viewerready");
         });
 
@@ -224,6 +251,146 @@ const Playground = () => {
 
     actionSkfb();
   }, [primaryId]);
+
+  const translate = (nodeIndex) => {
+    const planePos = {
+      0: 25.430345339211023,
+      1: 13.745762854960006,
+      2: 0.514484965586448,
+    };
+
+    if (sketchfabApi) {
+      sketchfabApi.translate(
+        nodeIndex,
+        [1, 1, 1],
+        {
+          duration: 1.0,
+          easing: "easeOutQuad",
+        },
+        function (err, translateTo) {
+          if (!err) {
+            window.console.log("Object has been translated to", translateTo);
+          } else {
+            console.log(err);
+          }
+        }
+      );
+    }
+  };
+
+  const FadeOut = (materialIndex, nodeIndex) => {
+    if (sketchfabApi) {
+      var myNode = nodeIndex;
+      var material;
+      var fadeOutTimer;
+      var fadeInterval = 20; // interval for 1% opacity change in ms
+      // var i = 0;
+      var i = 100; //FadOut
+      const setOpacity = (opacity) => {
+        material.channels.Opacity.enable = true;
+        material.channels.Opacity.type = "alphaBlend";
+        material.channels.Opacity.factor = opacity;
+        sketchfabApi.setMaterial(material, function () {
+          console.log("opacity set to " + opacity * 100 + "%");
+        });
+      };
+
+      sketchfabApi.getMaterialList(function (err, materials) {
+        if (!err) {
+          window.console.log(materials);
+          material = materials[materialIndex];
+
+          var fadeOut = function fadeOut() {
+            if (i < 0) {
+              window.clearInterval(fadeOutTimer);
+            } else {
+              setOpacity(i / 100);
+              i--;
+            }
+          };
+          fadeOutTimer = window.setInterval(fadeOut, fadeInterval);
+        }
+      });
+
+      // sketchfabApi.hide(myNode, function (err) {
+      //   if (!err) {
+      //     window.console.log("Hid node", myNode); // 114
+      //   }
+      // });
+    }
+  };
+
+  const FadeIn = (materialIndex, nodeIndex) => {
+    if (sketchfabApi) {
+      var myNode = nodeIndex;
+      var material;
+      var fadeInTimer;
+      var fadeInterval = 20; // interval for 1% opacity change in ms
+      var i = 0;
+      const setOpacity = (opacity) => {
+        material.channels.Opacity.enable = true;
+        material.channels.Opacity.type = "alphaBlend";
+        material.channels.Opacity.factor = opacity;
+        sketchfabApi.setMaterial(material, function () {
+          console.log("opacity set to " + opacity * 100 + "%");
+        });
+      };
+
+      sketchfabApi.getMaterialList(function (err, materials) {
+        if (!err) {
+          window.console.log(materials);
+          material = materials[materialIndex];
+          var fadeIn = function fadeIn() {
+            if (i > 100) {
+              window.clearInterval(fadeInTimer);
+            } else {
+              setOpacity(i / 100);
+              i++;
+            }
+          };
+          fadeInTimer = window.setInterval(fadeIn, fadeInterval);
+        }
+      });
+
+      // sketchfabApi.hide(myNode, function (err) {
+      //   if (!err) {
+      //     window.console.log("Hid node", myNode); // 114
+      //   }
+      // });
+    }
+  };
+
+  const setCameraLookAt = (position, target) => {
+    sketchfabApi &&
+      sketchfabApi.setCameraLookAt(position, target, 4.3, function (err) {
+        if (!err) {
+          // window.console.log("Camera moved");
+        }
+      });
+  };
+
+  const HideShowAnnotation = (state) => {
+    //state => true -> show
+    if (state) {
+      for (let i = 0; i < 4; i++) {
+        sketchfabApi &&
+          sketchfabApi.showAnnotation(i, function (err, index) {
+            if (!err) {
+              // window.console.log("Hiding annotation", index + 1);
+            }
+          });
+      }
+    } else {
+      for (let i = 0; i < 4; i++) {
+        sketchfabApi &&
+          sketchfabApi.hideAnnotation(i, function (err, index) {
+            if (!err) {
+              //  window.console.log('Showing annotation', index + 1);
+            }
+          });
+      }
+    }
+  };
   return (
     <MDBContainer
       fluid
@@ -239,41 +406,11 @@ const Playground = () => {
           className="p-2 h-100 d-flex flex-column justify-content-between sidenav-content"
         >
           {activeAnnotation && (
-            <MDBRow className="px-3">
-              <MDBCol size={2}>
-                <span className="annotation-index">{activeAnnotation}</span>
-              </MDBCol>
-              <MDBCol className="d-flex align-items-center" size={10}>
-                <span className="fs-4">
-                  {showData[activeAnnotation - 1].name}
-                </span>
-              </MDBCol>
-              <MDBCol size={2} className="d-flex align-items-center"></MDBCol>
-              <MDBCol size={10} className="d-flex align-items-center">
-                {showData[activeAnnotation - 1].description}
-              </MDBCol>{" "}
-              <MDBCol size={2} className="d-flex align-items-center"></MDBCol>
-              <MDBCol size={10} className="d-flex align-items-center">
-                <img
-                  src={imageArray[activeAnnotation - 1].src}
-                  alt=""
-                  className="img-fluid playground-image mt-2"
-                />
-              </MDBCol>
-              <MDBCol size={2} className="d-flex align-items-center"></MDBCol>
-              <MDBCol size={10} className="d-flex align-items-center">
-                <MDBBtn
-                  color="tertiary"
-                  rippleColor="light"
-                  className="learn-more"
-                  onClick={() =>
-                    window.open(showData[activeAnnotation - 1].url, "_blank")
-                  }
-                >
-                  Learn more
-                </MDBBtn>
-              </MDBCol>
-            </MDBRow>
+            <SideNav
+              activeAnnotation={activeAnnotation}
+              imageArray={imageArray}
+              showData={showData}
+            />
           )}
           <MDBRow>
             <MDBCol size={2} className="d-flex align-items-center">
@@ -287,12 +424,6 @@ const Playground = () => {
                 }}
               >
                 CLOSE
-                {/* <MDBIcon
-                  fas
-                  icon="long-arrow-alt-right"
-                  size="2x"
-                  color="white"
-                /> */}
               </MDBBtn>
             </MDBCol>
             <MDBCol size={10}>
@@ -343,24 +474,43 @@ const Playground = () => {
             floating
             size="lg"
             onClick={() => {
-              sketchfabApi &&
-                sketchfabApi.setCameraLookAt(
-                  [18.969704771433705, -20.711382903447515, 11.44732606112732],
-                  [18.545232830777184, 7.889178265625679, 2.5813788772057715],
-                  4.3,
-                  function (err) {
-                    if (!err) {
-                      // window.console.log("Camera moved");
-                    }
-                  }
-                );
+              setCameraLookAt(
+                [18.969704771433705, -20.711382903447515, 11.44732606112732],
+                [18.545232830777184, 7.889178265625679, 2.5813788772057715]
+              );
+              setGameState("menu");
+              HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
             }}
-            className="playground-info mt-2"
+            className="playground-info my-2"
           >
             <MDBIcon fas icon="recycle" size="2x" />
           </MDBBtn>
         </div>
+
+        <MDBBtn
+          size="lg"
+          className={`playground-info start-btn  ${
+            gameState === "menu" ? "" : "opacity-0"
+          }`}
+          // onClick={() => FadeOut(14, 373)}
+          // onClick={() => translate(318)}
+          onClick={() => {
+            // sketchfabApi &&
+            //   sketchfabApi.getCameraLookAt(function (err, camera) {
+            //     window.console.log(camera.position); // [x, y, z]
+            //     window.console.log(camera.target); // [x, y, z]
+            //   });
+            setCameraLookAt(
+              [13.782937050521092, -2.4654739429689876, 4.002817523512887],
+              [14.684449093662003, 7.702185930480859, 0.16619367830683637]
+            );
+            HideShowAnnotation(true);
+            setGameState("playing");
+          }}
+        >
+          <span className="fs-4">START</span>
+        </MDBBtn>
       </div>
       <Modal
         centredModal={centredModal}

@@ -37,8 +37,8 @@ export default function Modal({
             </MDBModalHeader>
             <MDBModalBody>
               <div className="mb-2">
-                Explore Further by Clicking/Tapping on Annotation Hotspots to
-                Access Detailed Information.
+                "START" to explore Further by Clicking/Tapping on Annotation
+                Hotspots to Access Detailed Information.
               </div>
               <MDBCheckbox
                 name="flexCheck"
