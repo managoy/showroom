@@ -20,7 +20,8 @@ const Playground = () => {
   const [sketchfabApi, setSketchfabApi] = useState();
   const [imageArray, setImageArray] = useState([]);
   const [primaryId, setPrimaryId] = useState(
-    "39cd19123dc74c438b22b357dbd959f0"
+    "8a5925b038ae413a84e986df010da074"
+    // "39cd19123dc74c438b22b357dbd959f0"
   );
   const [dontShowAgain, setDontShowAgain] = useState(
     localStorage.getItem("dontShowAgain") === "true"
@@ -174,20 +175,29 @@ const Playground = () => {
             });
           }
 
-          // Get Node Map
-          api.getNodeMap(function (err, nodes) {
-            if (!err) {
-              window.console.log("Nodes", nodes); // [ ... ]
-              window.tempNode = nodes;
-            }
-          });
+          // // Get Node Map
+          // api.getNodeMap(function (err, nodes) {
+          //   if (!err) {
+          //     window.console.log("Nodes", nodes); // [ ... ]
+          //     window.tempNode = nodes;
+          //   }
+          // });
 
-          // Get Scene Graph
-          api.getSceneGraph(function (err, graph) {
-            if (!err) {
-              window.console.log("Graph", graph); // { ... }
-            }
-          });
+          // // Get Scene Graph
+          // api.getSceneGraph(function (err, graph) {
+          //   if (!err) {
+          //     window.console.log("Graph", graph); // { ... }
+          //   }
+          // });
+
+          // // Get Nodes
+          // api.addEventListener(
+          //   "nodeMouseEnter",
+          //   function (node) {
+          //     window.console.log("Entering node", node.instanceID);
+          //   },
+          //   { pick: "fast" }
+          // );
 
           console.log("viewerready");
         });
@@ -252,29 +262,41 @@ const Playground = () => {
     actionSkfb();
   }, [primaryId]);
 
-  const translate = (nodeIndex) => {
-    const planePos = {
-      0: 25.430345339211023,
-      1: 13.745762854960006,
-      2: 0.514484965586448,
-    };
-
-    if (sketchfabApi) {
-      sketchfabApi.translate(
-        nodeIndex,
-        [1, 1, 1],
-        {
-          duration: 1.0,
-          easing: "easeOutQuad",
-        },
-        function (err, translateTo) {
-          if (!err) {
-            window.console.log("Object has been translated to", translateTo);
-          } else {
-            console.log(err);
+  const translate = (state, nodeIndex) => {
+    if (state) {
+      if (sketchfabApi) {
+        sketchfabApi.translate(
+          nodeIndex,
+          [0, 0, -3],
+          {
+            duration: 2.0,
+            easing: "easeOutQuad",
+          },
+          function (err, translateTo) {
+            if (!err) {
+              // window.console.log("Object has been translated to", translateTo);
+              // nodeIndex === 722 && HideShowNode(false, 722);
+            }
           }
-        }
-      );
+        );
+      }
+    } else {
+      if (sketchfabApi) {
+        sketchfabApi.translate(
+          nodeIndex,
+          [0, 0, 0],
+          {
+            duration: 2.0,
+            easing: "easeOutQuad",
+          },
+          function (err, translateTo) {
+            if (!err) {
+              // window.console.log("Object has been translated to", translateTo);
+              // nodeIndex === 722 && HideShowNode(true, 722);
+            }
+          }
+        );
+      }
     }
   };
 
@@ -291,13 +313,13 @@ const Playground = () => {
         material.channels.Opacity.type = "alphaBlend";
         material.channels.Opacity.factor = opacity;
         sketchfabApi.setMaterial(material, function () {
-          console.log("opacity set to " + opacity * 100 + "%");
+          // console.log("opacity set to " + opacity * 100 + "%");
         });
       };
 
       sketchfabApi.getMaterialList(function (err, materials) {
         if (!err) {
-          window.console.log(materials);
+          // window.console.log(materials);
           material = materials[materialIndex];
 
           var fadeOut = function fadeOut() {
@@ -320,6 +342,25 @@ const Playground = () => {
     }
   };
 
+  const HideShowNode = (state, nodeIndex) => {
+    // state => true -> show
+    if (state) {
+      sketchfabApi &&
+        sketchfabApi.show(nodeIndex, function (err) {
+          if (!err) {
+            // window.console.log("Showed node", nodeIndex);
+          }
+        });
+    } else {
+      sketchfabApi &&
+        sketchfabApi.hide(nodeIndex, function (err) {
+          if (!err) {
+            // window.console.log("Hid node", nodeIndex);
+          }
+        });
+    }
+  };
+
   const FadeIn = (materialIndex, nodeIndex) => {
     if (sketchfabApi) {
       var myNode = nodeIndex;
@@ -332,7 +373,7 @@ const Playground = () => {
         material.channels.Opacity.type = "alphaBlend";
         material.channels.Opacity.factor = opacity;
         sketchfabApi.setMaterial(material, function () {
-          console.log("opacity set to " + opacity * 100 + "%");
+          // console.log("opacity set to " + opacity * 100 + "%");
         });
       };
 
@@ -475,12 +516,20 @@ const Playground = () => {
             size="lg"
             onClick={() => {
               setCameraLookAt(
-                [18.969704771433705, -20.711382903447515, 11.44732606112732],
-                [18.545232830777184, 7.889178265625679, 2.5813788772057715]
+                [2.5325877079254653, -39.95826382786862, 14.155060389795018],
+                [1.3553755223143582, 0.5852844219581764, 0.9761111000143078]
               );
               setGameState("menu");
               HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
+              FadeIn(28, 685); // Grass
+              FadeIn(2, 685); // SideWalk
+              FadeIn(16, 685); // Concrete
+              translate(false, 686); //Concrete Plates
+              translate(false, 741); // Grass
+              translate(false, 722); // Grass
+              HideShowNode(true, 760); // Mailbox_House_Number
+              HideShowNode(true, 722); // Front_Fence
             }}
             className="playground-info my-2"
           >
@@ -493,20 +542,21 @@ const Playground = () => {
           className={`playground-info start-btn  ${
             gameState === "menu" ? "" : "opacity-0"
           }`}
-          // onClick={() => FadeOut(14, 373)}
-          // onClick={() => translate(318)}
           onClick={() => {
-            // sketchfabApi &&
-            //   sketchfabApi.getCameraLookAt(function (err, camera) {
-            //     window.console.log(camera.position); // [x, y, z]
-            //     window.console.log(camera.target); // [x, y, z]
-            //   });
             setCameraLookAt(
-              [13.782937050521092, -2.4654739429689876, 4.002817523512887],
-              [14.684449093662003, 7.702185930480859, 0.16619367830683637]
+              [-3.5879883543155944, -10.47154429578519, 3.3845515186364263],
+              [-7.390950037692555, 7.933885835587311, -6.353863711974613]
             );
             HideShowAnnotation(true);
             setGameState("playing");
+            FadeOut(28, 685); // Grass
+            FadeOut(2, 685); // SideWalk
+            FadeOut(16, 685); // Concrete
+            translate(true, 686); //Concrete Plates
+            translate(true, 741); // Grass
+            translate(true, 722); // Grass
+            HideShowNode(false, 760); // Mailbox_House_Number
+            HideShowNode(false, 722); // Front_Fence
           }}
         >
           <span className="fs-4">START</span>
