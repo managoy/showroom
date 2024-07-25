@@ -529,7 +529,7 @@ const Playground = () => {
               document.getElementById("mySidenav").style.width = "0px";
               FadeIn(3, 685); // Grass
               FadeIn(28, 685); // SideWalk
-              FadeIn(19, 685); // Concrete
+              FadeIn(10, 685); // Concrete
               translate(false, 686); //Concrete Plates
               translate(false, 741); // Grass
               translate(false, 722); // Grass
@@ -577,7 +577,7 @@ const Playground = () => {
               setGameState("playing");
               FadeOut(3, 685); // Grass
               FadeOut(28, 685); // SideWalk
-              FadeOut(19, 685); // Concrete
+              FadeOut(10, 685); // Concrete
               translate(true, 686); //Concrete Plates
               translate(true, 741); // Grass
               translate(true, 722); // Grass
