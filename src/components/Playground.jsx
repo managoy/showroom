@@ -379,7 +379,7 @@ const Playground = () => {
 
       sketchfabApi.getMaterialList(function (err, materials) {
         if (!err) {
-          window.console.log(materials);
+          // window.console.log(materials);
           material = materials[materialIndex];
           var fadeIn = function fadeIn() {
             if (i > 100) {
