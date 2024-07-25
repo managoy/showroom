@@ -234,4 +234,7 @@ body {
   pointer-events: auto; /* Ensure the button itself is clickable */
 }
 
+.red {
+  background-color: orange !important;
+}
 /*****Play Ground****/

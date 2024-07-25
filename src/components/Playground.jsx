@@ -19,6 +19,7 @@ const Playground = () => {
   const [activeAnnotation, setActiveAnnotation] = useState();
   const [sketchfabApi, setSketchfabApi] = useState();
   const [imageArray, setImageArray] = useState([]);
+  const [ready, setReady] = useState(false);
   const [primaryId, setPrimaryId] = useState(
     "8a5925b038ae413a84e986df010da074"
     // "39cd19123dc74c438b22b357dbd959f0"
@@ -200,6 +201,10 @@ const Playground = () => {
           // );
 
           console.log("viewerready");
+          const timeoutId = setTimeout(() => setReady(true), 3000);
+
+          // Clear timeout on cleanup
+          return () => clearTimeout(timeoutId);
         });
 
         // Annotation Previous vs Next
@@ -379,7 +384,7 @@ const Playground = () => {
 
       sketchfabApi.getMaterialList(function (err, materials) {
         if (!err) {
-          // window.console.log(materials);
+          window.console.log(materials);
           material = materials[materialIndex];
           var fadeIn = function fadeIn() {
             if (i > 100) {
@@ -522,9 +527,9 @@ const Playground = () => {
               setGameState("menu");
               HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
-              FadeIn(28, 685); // Grass
-              FadeIn(2, 685); // SideWalk
-              FadeIn(16, 685); // Concrete
+              FadeIn(3, 685); // Grass
+              FadeIn(28, 685); // SideWalk
+              FadeIn(19, 685); // Concrete
               translate(false, 686); //Concrete Plates
               translate(false, 741); // Grass
               translate(false, 722); // Grass
@@ -535,32 +540,54 @@ const Playground = () => {
           >
             <MDBIcon fas icon="recycle" size="2x" />
           </MDBBtn>
+          {gameState === "menu" && (
+            <MDBBtn
+              floating
+              size="lg"
+              onClick={() => {
+                if (ready && gameState === "menu") {
+                  return setReady(false);
+                } else if (!ready && gameState === "menu") {
+                  return setReady(true);
+                } else {
+                  return;
+                }
+              }}
+              className={`playground-info red${
+                !ready && gameState === "menu" ? "" : "red"
+              }`}
+            >
+              <MDBIcon far icon={`${ready ? "eye" : "eye-slash"}`} size="2x" />
+            </MDBBtn>
+          )}
         </div>
 
-        <MDBBtn
-          size="lg"
-          className={`playground-info start-btn  ${
-            gameState === "menu" ? "" : "opacity-0"
-          }`}
-          onClick={() => {
-            setCameraLookAt(
-              [-3.5879883543155944, -10.47154429578519, 3.3845515186364263],
-              [-7.390950037692555, 7.933885835587311, -6.353863711974613]
-            );
-            HideShowAnnotation(true);
-            setGameState("playing");
-            FadeOut(28, 685); // Grass
-            FadeOut(2, 685); // SideWalk
-            FadeOut(16, 685); // Concrete
-            translate(true, 686); //Concrete Plates
-            translate(true, 741); // Grass
-            translate(true, 722); // Grass
-            HideShowNode(false, 760); // Mailbox_House_Number
-            HideShowNode(false, 722); // Front_Fence
-          }}
-        >
-          <span className="fs-4">START</span>
-        </MDBBtn>
+        {ready && (
+          <MDBBtn
+            size="lg"
+            className={`playground-info start-btn  ${
+              gameState === "menu" ? "" : "opacity-0"
+            }`}
+            onClick={() => {
+              setCameraLookAt(
+                [-3.5879883543155944, -10.47154429578519, 3.3845515186364263],
+                [-7.390950037692555, 7.933885835587311, -6.353863711974613]
+              );
+              HideShowAnnotation(true);
+              setGameState("playing");
+              FadeOut(3, 685); // Grass
+              FadeOut(28, 685); // SideWalk
+              FadeOut(19, 685); // Concrete
+              translate(true, 686); //Concrete Plates
+              translate(true, 741); // Grass
+              translate(true, 722); // Grass
+              HideShowNode(false, 760); // Mailbox_House_Number
+              HideShowNode(false, 722); // Front_Fence
+            }}
+          >
+            <span className="fs-4">START</span>
+          </MDBBtn>
+        )}
       </div>
       <Modal
         centredModal={centredModal}
