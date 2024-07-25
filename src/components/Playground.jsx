@@ -324,7 +324,7 @@ const Playground = () => {
 
       sketchfabApi.getMaterialList(function (err, materials) {
         if (!err) {
-          // window.console.log(materials);
+          window.console.log(materials);
           material = materials[materialIndex];
 
           var fadeOut = function fadeOut() {
@@ -527,9 +527,9 @@ const Playground = () => {
               setGameState("menu");
               HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
-              FadeIn(3, 685); // Grass
-              FadeIn(28, 685); // SideWalk
-              FadeIn(10, 685); // Concrete
+              FadeIn(10, 685); // Grass
+              FadeIn(5, 685); // SideWalk
+              FadeIn(14, 685); // Concrete
               translate(false, 686); //Concrete Plates
               translate(false, 741); // Grass
               translate(false, 722); // Grass
@@ -575,9 +575,9 @@ const Playground = () => {
               );
               HideShowAnnotation(true);
               setGameState("playing");
-              FadeOut(3, 685); // Grass
-              FadeOut(28, 685); // SideWalk
-              FadeOut(10, 685); // Concrete
+              FadeOut(10, 685); // Grass
+              FadeOut(5, 685); // SideWalk
+              FadeOut(14, 685); // Concrete
               translate(true, 686); //Concrete Plates
               translate(true, 741); // Grass
               translate(true, 722); // Grass

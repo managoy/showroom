@@ -207,6 +207,7 @@ body {
 
 .playground-image {
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .custom-model {

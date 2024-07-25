@@ -21,6 +21,9 @@ const SideNav = ({ showData, activeAnnotation, imageArray }) => {
             src={imageArray[activeAnnotation - 1].src}
             alt=""
             className="img-fluid playground-image mt-2"
+            onClick={() =>
+              window.open(showData[activeAnnotation - 1].url, "_blank")
+            }
           />
         </MDBCol>
         <MDBCol size={2} className="d-flex align-items-center"></MDBCol>
