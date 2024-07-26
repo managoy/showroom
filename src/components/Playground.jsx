@@ -47,7 +47,7 @@ const Playground = () => {
     } else {
       setCentredModal(true);
     }
-  }, [setCentredModal]);
+  }, []);
 
   const showData = [
     {
@@ -265,7 +265,7 @@ const Playground = () => {
     }
 
     actionSkfb();
-  }, [primaryId]);
+  }, []);
 
   const translate = (state, nodeIndex) => {
     if (state) {
@@ -324,7 +324,7 @@ const Playground = () => {
 
       sketchfabApi.getMaterialList(function (err, materials) {
         if (!err) {
-          window.console.log(materials);
+          // window.console.log(materials);
           material = materials[materialIndex];
 
           var fadeOut = function fadeOut() {
@@ -520,6 +520,16 @@ const Playground = () => {
             floating
             size="lg"
             onClick={() => {
+              if (gameState !== "menu") {
+                FadeIn(10, 685); // Grass
+                FadeIn(5, 685); // SideWalk
+                FadeIn(14, 685); // Concrete
+                translate(false, 686); //Concrete Plates
+                translate(false, 741); // Grass
+                translate(false, 722); // Grass
+                HideShowNode(true, 760); // Mailbox_House_Number
+                HideShowNode(true, 722); // Front_Fence
+              }
               setCameraLookAt(
                 [2.5325877079254653, -39.95826382786862, 14.155060389795018],
                 [1.3553755223143582, 0.5852844219581764, 0.9761111000143078]
@@ -527,14 +537,6 @@ const Playground = () => {
               setGameState("menu");
               HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
-              FadeIn(10, 685); // Grass
-              FadeIn(5, 685); // SideWalk
-              FadeIn(14, 685); // Concrete
-              translate(false, 686); //Concrete Plates
-              translate(false, 741); // Grass
-              translate(false, 722); // Grass
-              HideShowNode(true, 760); // Mailbox_House_Number
-              HideShowNode(true, 722); // Front_Fence
             }}
             className="playground-info my-2"
           >
