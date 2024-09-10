@@ -4,11 +4,13 @@ import {
   MDBRow,
   MDBBtn,
   MDBIcon,
+  MDBTooltip,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { useParams } from "react-router-dom";
 import SecondaryPlayer from "./SecondaryPlayer";
+import { useNavigate } from "react-router-dom";
 
 const mainData = {
   name: "Pico Neo 3",
@@ -21,6 +23,7 @@ const mainData = {
 };
 
 const Showroom = () => {
+  const navigate = useNavigate();
   const [content, setContent] = useState();
   const [imageError, setImageError] = useState(false);
   const [activeAnnotation, setActiveAnnotation] = useState();
@@ -264,7 +267,7 @@ const Showroom = () => {
         className="text-center px-1 py-3 annotate-sync"
         style={{ flex: 1 }}
       >
-        <MDBCol xxl="8" md="12" sm="12" lg="8">
+        <MDBCol xxl="8" md="12" sm="12" lg="8" className="position-relative">
           {" "}
           <iframe
             id="api-frame-anno-sync"
@@ -279,6 +282,16 @@ const Showroom = () => {
             execution-while-not-rendered="true"
             web-share="true"
           ></iframe>
+          <MDBBtn
+            floating
+            size="lg"
+            onClick={() => {
+              navigate("/");
+            }}
+            className="playground-info my-1 position-absolute purging"
+          >
+            <MDBIcon fas icon="home" size="2x" />
+          </MDBBtn>
         </MDBCol>
         <MDBCol
           xxl="4"

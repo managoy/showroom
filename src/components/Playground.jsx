@@ -4,13 +4,15 @@ import {
   MDBContainer,
   MDBIcon,
   MDBRow,
+  MDBTooltip,
 } from "mdb-react-ui-kit";
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import SideNav from "./SideNav";
-import { mat4 } from "gl-matrix";
+import { useNavigate } from "react-router-dom";
 
 const Playground = () => {
+  const navigate = useNavigate();
   const [sideNavOpen, setSideNavOpen] = useState(false);
   const [gameState, setGameState] = useState("menu");
   const [content, setContent] = useState();
@@ -55,28 +57,28 @@ const Playground = () => {
       name: "Natural Gas Valves",
       description:
         "Kerotest POLYBALL® gas valves: American-made, available in various sizes, and feature industry-standard tracking for easy specification access.",
-      url: "https://gtienergy.paracosma.com/naturalgasvalves",
+      url: "https://interactivetraining.gti.energy/demo/f37d6890c26c4b83b602f81612ff5941/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3NldElkIjoiZjM3ZDY4OTBjMjZjNGI4M2I2MDJmODE2MTJmZjU5NDEiLCJpYXQiOjE3MjU5NzUwOTB9.26Wv1pSHjPhOVAB2dl6jqfgHQ8_uf1P65QsIrTAij14",
     },
     {
       assetId: "26910538f5e94df1895b91c37f6c23cb",
       name: "Permalock Mechanical PE Tapping TE",
       description:
         "A reliable tapping tee for polyethylene piping systems, ensuring secure and efficient connections.",
-      url: "https://gtienergy.paracosma.com/permalockMechanicalPETappingTee",
+      url: "https://interactivetraining.gti.energy/demo/26910538f5e94df1895b91c37f6c23cb/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3NldElkIjoiMjY5MTA1MzhmNWU5NGRmMTg5NWI5MWMzN2Y2YzIzY2IiLCJpYXQiOjE3MjU5NzE0ODV9.Uj7OB_5LFyKW0rvnV6ZVebAf68_BYb-ozXtkQHE5DCU",
     },
     {
       assetId: "d64f5544604547af94ccc6a5c649d125",
       name: "Flange Insulation",
       description:
         "These products have proven highly effective and reliable for controlling and maintaining the integrity of piping systems even under the most demanding conditions.",
-      url: "https://gtienergy.paracosma.com/flangeInsulation",
+      url: "https://interactivetraining.gti.energy/demo/d64f5544604547af94ccc6a5c649d125/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3NldElkIjoiZDY0ZjU1NDQ2MDQ1NDdhZjk0Y2NjNmE1YzY0OWQxMjUiLCJpYXQiOjE3MjU5NzE1NjR9._6ALt8DGW6TTj-A_tiQ0n36ERsKAlgcwKlL2V05yDIY",
     },
     {
       assetId: "0acbfc65edc14410b1bc1319a0776d19",
       name: "Residential Gas Meter - R-275",
       description:
         "The R-275 is a modern Class 250 residential gas meter, lighter, more durable, and low maintenance compared to previous models in its class.",
-      url: "https://gtienergy.paracosma.com/gasMeter",
+      url: "https://interactivetraining.gti.energy/demo/0acbfc65edc14410b1bc1319a0776d19/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhc3NldElkIjoiMGFjYmZjNjVlZGMxNDQxMGIxYmMxMzE5YTA3NzZkMTkiLCJpYXQiOjE3MjU5NzA5NTd9.JvCW8t9ty7j1a346Y44Uoyxfx51YEGe8pmNUW6ANKH4",
     },
   ];
 
@@ -511,8 +513,19 @@ const Playground = () => {
           <MDBBtn
             floating
             size="lg"
+            onClick={() => {
+              navigate("/");
+            }}
+            className="playground-info my-1"
+          >
+            <MDBIcon fas icon="home" size="2x" />
+          </MDBBtn>
+
+          <MDBBtn
+            floating
+            size="lg"
             onClick={toggleOpen}
-            className="playground-info"
+            className="playground-info my-1"
           >
             <MDBIcon fas icon="info-circle" size="2x" />
           </MDBBtn>
@@ -538,7 +551,7 @@ const Playground = () => {
               HideShowAnnotation(false);
               document.getElementById("mySidenav").style.width = "0px";
             }}
-            className="playground-info my-2"
+            className="playground-info my-1"
           >
             <MDBIcon fas icon="recycle" size="2x" />
           </MDBBtn>
@@ -555,7 +568,7 @@ const Playground = () => {
                   return;
                 }
               }}
-              className={`playground-info red${
+              className={`my-1 playground-info red${
                 !ready && gameState === "menu" ? "" : "red"
               }`}
             >
